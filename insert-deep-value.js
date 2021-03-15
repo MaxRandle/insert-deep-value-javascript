@@ -7,13 +7,18 @@
  * @param {Any} value value to be inserted at the location specified by the keyPath
  * @return {Object} object with the key path, value pair inserted
  */
-const insertDeepValue = (object, keyPath, value) => {
-  const key = keyPath.shift();
+const insertDeepValue = (object, keyPath, value) =>
+  re(object, keyPath.reverse(), value);
+
+const re = (object, keyPath, value) => {
+  const key = keyPath.pop();
   if (!key) {
     return value;
   }
-  object = object || {};
-  object[key] = insertDeepValue(object[key], keyPath, value);
+  if (!object) {
+    object = {};
+  }
+  object[key] = re(object[key], keyPath, value);
   return object;
 };
 
